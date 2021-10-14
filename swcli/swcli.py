@@ -1,12 +1,13 @@
 import fire
 from httpx import get
 
+# Settings
+BASE_URL='https://swapi.dev/api/'
+
 
 def people(name):
     "Returns a SW people."
-    BASE_URL='https://swapi.dev/api/people/?search={name}'
-
-    response = get(BASE_URL.format(name=name)).json()
+    response = get(BASE_URL+'people/?search='+name).json()
 
     for number in range(len(response['results'])):
         response_dict = dict(response['results'][number])
@@ -40,8 +41,19 @@ def people(name):
             "Vehicles": vehicles,
             "Starships": starships,
         }
-        return character
+        yield character
 
+def planets(name):
+    "Returns a SW planet."
+    response = get(BASE_URL+'planets/?search='+name).json()
+
+    for number in range(len(response['results'])):
+        response_dict = dict(response['results'][number])
+        planet = {
+           "Name": response_dict['name'],
+           "Rotation Period": response_dict['rotation_period'],
+        }
+        yield planet
 
 if __name__ == '__main__':
     fire.Fire()
