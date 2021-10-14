@@ -13,14 +13,19 @@ def people(name):
         homeworld = get(response_dict['homeworld']).json()['name']
 
         vehicles = []
-        for i in response_dict['vehicles']:
-            vehicle = get(i).json()['name']
-            vehicles.append(vehicle)
+        for vehicle in response_dict['vehicles']:
+            vehicle_itens = get(vehicle).json()['name']
+            vehicles.append(vehicle_itens)
 
         films = []
-        for f in response_dict['films']:
-            film = get(f).json()['title']
-            films.append(film)
+        for film in response_dict['films']:
+            film_itens = get(film).json()['title']
+            films.append(film_itens)
+
+        starships = []
+        for starship in response_dict['starships']:
+            starship_itens = get(starship).json()['name']
+            starships.append(starship_itens)
 
         character = {
             "Name": response_dict['name'],
@@ -33,6 +38,7 @@ def people(name):
             "Homeworld": homeworld,
             "Films": films,
             "Vehicles": vehicles,
+            "Starships": starships,
         }
         return character
 
