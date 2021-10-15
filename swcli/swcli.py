@@ -1,4 +1,5 @@
 import fire
+import json
 from httpx import get
 
 # Settings
@@ -51,7 +52,7 @@ def films(title):
             "Planets": planets_list,
         }
 
-        yield film_response
+        yield json.dumps(film_response)
 
 
 def people(name):
@@ -91,7 +92,7 @@ def people(name):
             "Starships": starships_list,
         }
 
-        yield character_response
+        yield json.dumps(character_response)
 
 
 def planets(name):
@@ -125,7 +126,7 @@ def planets(name):
             "Films": films_list,
         }
 
-        yield planet_response
+        yield json.dumps(planet_response)
 
 
 def species(name):
@@ -162,7 +163,7 @@ def species(name):
             "Films": films_list,
         }
 
-        yield species_response
+        yield json.dumps(species_response)
 
 
 def starships(name):
@@ -200,7 +201,7 @@ def starships(name):
             "Pilots": pilots_list,
         }
 
-        yield starships_response
+        yield json.dumps(starships_response)
 
 
 def vehicles(name):
@@ -236,7 +237,7 @@ def vehicles(name):
             "Pilots": pilots_list,
         }
 
-        yield vehicles_response
+        yield json.dumps(vehicles_response)
 
 
 if __name__ == '__main__':
