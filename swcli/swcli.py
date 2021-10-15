@@ -1,12 +1,13 @@
 import fire
 from httpx import get
 
+# Settings
+BASE_URL='https://swapi.dev/api/'
+
 
 def people(name):
     "Returns a SW people."
-    BASE_URL='https://swapi.dev/api/people/?search={name}'
-
-    response = get(BASE_URL.format(name=name)).json()
+    response = get(BASE_URL+'people/?search='+name).json()
 
     for number in range(len(response['results'])):
         response_dict = dict(response['results'][number])
@@ -40,7 +41,40 @@ def people(name):
             "Vehicles": vehicles,
             "Starships": starships,
         }
-        return character
+        yield character
+
+
+def planets(name):
+    "Returns a SW planet."
+    response = get(BASE_URL+'planets/?search='+name).json()
+
+    for number in range(len(response['results'])):
+        response_dict = dict(response['results'][number])
+
+        residents = []
+        for resident in response_dict['residents']:
+            resident_itens = get(resident).json()['name']
+            residents.append(resident_itens)
+
+        films = []
+        for film in response_dict['films']:
+            film_itens = get(film).json()['title']
+            films.append(film_itens)
+
+        planet = {
+           "Name": response_dict['name'],
+           "Diameter (Km)": response_dict['diameter'],
+           "Rotation Period (Hours)": response_dict['rotation_period'],
+           "Orbital Period (Days)": response_dict['orbital_period'],
+           "Gravity (G)": response_dict['gravity'],
+           "Population": response_dict['population'],
+           "Climate": response_dict['climate'],
+           "Terrain": response_dict['terrain'],
+           "Surface Water": response_dict['surface_water'],
+           "Residents": residents,
+           "Films": films,
+        }
+        yield planet
 
 
 if __name__ == '__main__':
