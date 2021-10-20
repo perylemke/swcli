@@ -1,15 +1,19 @@
 import fire
-import json
+import settings
 from httpx import get
-from models import Film, Person, Planet, Specie, Starship, Vehicle
-
-# Settings
-BASE_URL='https://swapi.dev/api/'
+from models import _Film, _Person, _Planet, _Specie, _Starship, _Vehicle
 
 
 def films(title):
-    "Returns a SW film"
-    response = get(BASE_URL+'films/?search='+title).json()
+    """
+    Return a one or many movies on Star Wars trilogies.
+    Like: A New Hope, Attack of Clones, etc.
+    """
+    response = get(
+        settings.BASE_URL +
+        settings.FILMS +
+        settings.SEARCH +
+        title).json()
 
     for response_dict in response['results']:
         species_list = []
@@ -50,13 +54,20 @@ def films(title):
             "planets": planets_list,
         }
 
-        film = Film(**film_response)
+        film = _Film(**film_response)
         yield film.json(ensure_ascii=False, encoder='utf-8')
 
 
 def people(name):
-    "Returns a SW people."
-    response = get(BASE_URL+'people/?search='+name).json()
+    """
+    Returns a character on the Star Wars movies.
+    Like: Luke, Leia, Anakin, etc.
+    """
+    response = get(
+        settings.BASE_URL +
+        settings.PEOPLE +
+        settings.SEARCH +
+        name).json()
 
     for response_dict in response['results']:
         homeworld = get(response_dict['homeworld']).json()['name']
@@ -78,7 +89,7 @@ def people(name):
 
         character_response = {
             "name": response_dict['name'],
-            "height": int(response_dict['height'])/100,
+            "height": int(response_dict['height']) / 100,
             "mass": response_dict['mass'],
             "hair_color": response_dict['hair_color'],
             "skin_color": response_dict['skin_color'],
@@ -90,13 +101,20 @@ def people(name):
             "starships": starships_list,
         }
 
-        person = Person(**character_response)
+        person = _Person(**character_response)
         yield person.json(ensure_ascii=False, encoder='utf-8')
 
 
 def planets(name):
-    "Returns a SW planet."
-    response = get(BASE_URL+'planets/?search='+name).json()
+    """
+    Return a planet.
+    Like: Hoth, Naboo, etc.
+    """
+    response = get(
+        settings.BASE_URL +
+        settings.PLANETS +
+        settings.SEARCH +
+        name).json()
 
     for response_dict in response['results']:
         residents_list = []
@@ -123,13 +141,20 @@ def planets(name):
             "films": films_list,
         }
 
-        planet = Planet(**planet_response)
+        planet = _Planet(**planet_response)
         yield planet.json(ensure_ascii=False, encoder='utf-8')
 
 
 def species(name):
-    "Return a SW specie."
-    response = get(BASE_URL+'species/?search='+name).json()
+    """
+    Return a species on the Star Wars universe.
+    Like: Wookie, Human, etc.
+    """
+    response = get(
+        settings.BASE_URL +
+        settings.SPECIES +
+        settings.SEARCH +
+        name).json()
 
     for response_dict in response['results']:
         homeworld = get(response_dict['homeworld']).json()['name']
@@ -148,7 +173,7 @@ def species(name):
             "name": response_dict['name'],
             "classification": response_dict['classification'],
             "designation": response_dict['designation'],
-            "average_height": int(response_dict['average_height'])/100,
+            "average_height": int(response_dict['average_height']) / 100,
             "average_lifespan": response_dict['average_lifespan'],
             "eye_colors": response_dict['eye_colors'],
             "hair_colors": response_dict['hair_colors'],
@@ -159,13 +184,20 @@ def species(name):
             "films": films_list,
         }
 
-        specie = Specie(**species_response)
+        specie = _Specie(**species_response)
         yield specie.json(ensure_ascii=False, encoder='utf-8')
 
 
 def starships(name):
-    "Return a SW starship."
-    response = get(BASE_URL+'starships/?search='+name).json()
+    """
+    Return a Starships on Star Wars universe.
+    Like: Death Star, Millenium Falcon, etc.
+    """
+    response = get(
+        settings.BASE_URL +
+        settings.STARSHIPS +
+        settings.SEARCH +
+        name).json()
 
     for response_dict in response['results']:
         films_list = []
@@ -196,13 +228,20 @@ def starships(name):
             "pilots": pilots_list,
         }
 
-        starship = Starship(**starships_response)
+        starship = _Starship(**starships_response)
         yield starship.json(ensure_ascii=False, encoder='utf-8')
 
 
 def vehicles(name):
-    "Return a SW vehicle."
-    response = get(BASE_URL+'vehicles/?search='+name).json()
+    """
+    Return a vehicle used on Star Wars universe.
+    Like: TIE Fighter, Geonosian starfighter, etc.
+    """
+    response = get(
+        settings.BASE_URL +
+        settings.VEHICLES +
+        settings.SEARCH +
+        name).json()
 
     for response_dict in response['results']:
         films_list = []
@@ -231,7 +270,7 @@ def vehicles(name):
             "pilots": pilots_list,
         }
 
-        vehicle = Vehicle(**vehicles_response)
+        vehicle = _Vehicle(**vehicles_response)
         yield vehicle.json(ensure_ascii=False, encoder='utf-8')
 
 
