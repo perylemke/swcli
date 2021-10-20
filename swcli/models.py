@@ -1,14 +1,13 @@
 from pydantic import BaseModel
-from datetime import date
 from typing import List
 
 
-class Film(BaseModel):
+class _Film(BaseModel):
     title: str
-    episode: int
+    episode: str
     director: str
     producer: str
-    release_date: date
+    release_date: str
     species: List[str]
     starships: List[str]
     vehicles: List[str]
@@ -16,9 +15,9 @@ class Film(BaseModel):
     planets: List[str]
 
 
-class Person(BaseModel):
+class _Person(BaseModel):
     name: str
-    height: int
+    height: float
     mass: str
     hair_color: str
     skin_color: str
@@ -30,7 +29,7 @@ class Person(BaseModel):
     starships: List[str]
 
 
-class Planet(BaseModel):
+class _Planet(BaseModel):
     name: str
     diameter: int
     rotation_period: int
@@ -44,7 +43,7 @@ class Planet(BaseModel):
     films: List[str]
 
 
-class Specie(BaseModel):
+class _Specie(BaseModel):
     name: str
     classification: str
     designation: str
@@ -59,7 +58,7 @@ class Specie(BaseModel):
     films: List[str]
 
 
-class Starship(BaseModel):
+class _Starship(BaseModel):
     name: str
     model: str
     starship_class: str
@@ -77,7 +76,7 @@ class Starship(BaseModel):
     pilots: List[str]
 
 
-class Vehicle(BaseModel):
+class _Vehicle(BaseModel):
     name: str
     model: str
     vehicle_class: str
@@ -91,4 +90,3 @@ class Vehicle(BaseModel):
     consumables: str
     films: List[str]
     pilots: List[str]
-

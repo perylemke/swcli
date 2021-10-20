@@ -9,6 +9,7 @@ python = "^3.8"
 httpx = "^0.20.0"
 fire = "^0.4.0"
 pydantic = "^1.8.2"
+autopep8 = "^1.5.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
