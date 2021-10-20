@@ -1,6 +1,7 @@
 import fire
 import json
 from httpx import get
+from models import Film, Person, Planet, Specie, Starship, Vehicle
 
 # Settings
 BASE_URL='https://swapi.dev/api/'
@@ -10,9 +11,7 @@ def films(title):
     "Returns a SW film"
     response = get(BASE_URL+'films/?search='+title).json()
 
-    for number in range(len(response['results'])):
-        response_dict = dict(response['results'][number])
-
+    for response_dict in response['results']:
         species_list = []
         for specie in response_dict['species']:
             specie_itens = get(specie).json()['name']
@@ -39,28 +38,27 @@ def films(title):
             planets_list.append(planet_itens)
 
         film_response = {
-            "Title": response_dict['title'],
-            "Episode": response_dict['episode_id'],
-            "Opening Crawl": response_dict['opening_crawl'],
-            "Director": response_dict['director'],
-            "Producer": response_dict['producer'],
-            "Release Data": response_dict['release_date'],
-            "Species": species_list,
-            "Starships": starships_list,
-            "Vehicles": vehicles_list,
-            "Characters": characters_list,
-            "Planets": planets_list,
+            "title": response_dict['title'],
+            "episode": response_dict['episode_id'],
+            "director": response_dict['director'],
+            "producer": response_dict['producer'],
+            "release_date": response_dict['release_date'],
+            "species": species_list,
+            "starships": starships_list,
+            "vehicles": vehicles_list,
+            "characters": characters_list,
+            "planets": planets_list,
         }
 
-        yield json.dumps(film_response)
+        film = Film(**film_response)
+        yield film.json(ensure_ascii=False, encoder='utf-8')
 
 
 def people(name):
     "Returns a SW people."
     response = get(BASE_URL+'people/?search='+name).json()
 
-    for number in range(len(response['results'])):
-        response_dict = dict(response['results'][number])
+    for response_dict in response['results']:
         homeworld = get(response_dict['homeworld']).json()['name']
 
         vehicles_list = []
@@ -79,29 +77,28 @@ def people(name):
             starships_list.append(starship_itens)
 
         character_response = {
-            "Name": response_dict['name'],
-            "Height (Meters)": int(response_dict['height'])/100,
-            "Mass (Kg)": response_dict['mass'],
-            "Hair Color": response_dict['hair_color'],
-            "Skin Color": response_dict['skin_color'],
-            "Birth Year": response_dict['birth_year'],
-            "Gender": response_dict['gender'],
-            "Homeworld": homeworld,
-            "Films": films_list,
-            "Vehicles": vehicles_list,
-            "Starships": starships_list,
+            "name": response_dict['name'],
+            "height": int(response_dict['height'])/100,
+            "mass": response_dict['mass'],
+            "hair_color": response_dict['hair_color'],
+            "skin_color": response_dict['skin_color'],
+            "birth_year": response_dict['birth_year'],
+            "gender": response_dict['gender'],
+            "homeworld": homeworld,
+            "films": films_list,
+            "vehicles": vehicles_list,
+            "starships": starships_list,
         }
 
-        yield json.dumps(character_response)
+        person = Person(**character_response)
+        yield person.json(ensure_ascii=False, encoder='utf-8')
 
 
 def planets(name):
     "Returns a SW planet."
     response = get(BASE_URL+'planets/?search='+name).json()
 
-    for number in range(len(response['results'])):
-        response_dict = dict(response['results'][number])
-
+    for response_dict in response['results']:
         residents_list = []
         for resident in response_dict['residents']:
             resident_itens = get(resident).json()['name']
@@ -113,29 +110,28 @@ def planets(name):
             films_list.append(film_itens)
 
         planet_response = {
-            "Name": response_dict['name'],
-            "Diameter (Km)": response_dict['diameter'],
-            "Rotation Period (Hours)": response_dict['rotation_period'],
-            "Orbital Period (Days)": response_dict['orbital_period'],
-            "Gravity (G)": response_dict['gravity'],
-            "Population": response_dict['population'],
-            "Climate": response_dict['climate'],
-            "Terrain": response_dict['terrain'],
-            "Surface Water": response_dict['surface_water'],
-            "Residents": residents_list,
-            "Films": films_list,
+            "name": response_dict['name'],
+            "diameter": response_dict['diameter'],
+            "rotation_period": response_dict['rotation_period'],
+            "orbital_period": response_dict['orbital_period'],
+            "gravity": response_dict['gravity'],
+            "population": response_dict['population'],
+            "climate": response_dict['climate'],
+            "terrain": response_dict['terrain'],
+            "surface_water": response_dict['surface_water'],
+            "residents": residents_list,
+            "films": films_list,
         }
 
-        yield json.dumps(planet_response)
+        planet = Planet(**planet_response)
+        yield planet.json(ensure_ascii=False, encoder='utf-8')
 
 
 def species(name):
     "Return a SW specie."
     response = get(BASE_URL+'species/?search='+name).json()
 
-    for number in range(len(response['results'])):
-        response_dict = dict(response['results'][number])
-
+    for response_dict in response['results']:
         homeworld = get(response_dict['homeworld']).json()['name']
 
         people_list = []
@@ -149,30 +145,29 @@ def species(name):
             films_list.append(film_itens)
 
         species_response = {
-            "Name": response_dict['name'],
-            "Classification": response_dict['classification'],
-            "Designation": response_dict['designation'],
-            "Average Height (Meters)": int(response_dict['average_height'])/100,
-            "Average Lifespan (Years)": response_dict['average_lifespan'],
-            "Eye Colors": response_dict['eye_colors'],
-            "Hair Colors": response_dict['hair_colors'],
-            "Skin Colors": response_dict['skin_colors'],
-            "Language": response_dict['language'],
-            "Homeworld": homeworld,
-            "People": people_list,
-            "Films": films_list,
+            "name": response_dict['name'],
+            "classification": response_dict['classification'],
+            "designation": response_dict['designation'],
+            "average_height": int(response_dict['average_height'])/100,
+            "average_lifespan": response_dict['average_lifespan'],
+            "eye_colors": response_dict['eye_colors'],
+            "hair_colors": response_dict['hair_colors'],
+            "skin_colors": response_dict['skin_colors'],
+            "language": response_dict['language'],
+            "homeworld": homeworld,
+            "people": people_list,
+            "films": films_list,
         }
 
-        yield json.dumps(species_response)
+        specie = Specie(**species_response)
+        yield specie.json(ensure_ascii=False, encoder='utf-8')
 
 
 def starships(name):
     "Return a SW starship."
     response = get(BASE_URL+'starships/?search='+name).json()
 
-    for number in range(len(response['results'])):
-        response_dict = dict(response['results'][number])
-
+    for response_dict in response['results']:
         films_list = []
         for film in response_dict['films']:
             film_itens = get(film).json()['title']
@@ -184,33 +179,32 @@ def starships(name):
             pilots_list.append(pilot_itens)
 
         starships_response = {
-            "Name": response_dict['name'],
-            "Model": response_dict['model'],
-            "Starship Class": response_dict['starship_class'],
-            "Manufacturer": response_dict['manufacturer'],
-            "Cost (Credits)": response_dict['cost_in_credits'],
-            "Length (Meters)": response_dict['length'],
-            "Crew": response_dict['crew'],
-            "Passengers": response_dict['passengers'],
-            "Max Atmosphering Speed": response_dict['max_atmosphering_speed'],
-            "Hyperdrive Rating": response_dict['hyperdrive_rating'],
-            "MGLT": response_dict['MGLT'],
-            "Cargo Capacity": response_dict['cargo_capacity'],
-            "Consumables": response_dict['consumables'],
-            "Films": films_list,
-            "Pilots": pilots_list,
+            "name": response_dict['name'],
+            "model": response_dict['model'],
+            "starship_class": response_dict['starship_class'],
+            "manufacturer": response_dict['manufacturer'],
+            "cost": response_dict['cost_in_credits'],
+            "length": response_dict['length'],
+            "crew": response_dict['crew'],
+            "passengers": response_dict['passengers'],
+            "max_atmosphering_speed": response_dict['max_atmosphering_speed'],
+            "hyperdrive_rating": response_dict['hyperdrive_rating'],
+            "mglt": response_dict['MGLT'],
+            "cargo_capacity": response_dict['cargo_capacity'],
+            "consumables": response_dict['consumables'],
+            "films": films_list,
+            "pilots": pilots_list,
         }
 
-        yield json.dumps(starships_response)
+        starship = Starship(**starships_response)
+        yield starship.json(ensure_ascii=False, encoder='utf-8')
 
 
 def vehicles(name):
     "Return a SW vehicle."
     response = get(BASE_URL+'vehicles/?search='+name).json()
 
-    for number in range(len(response['results'])):
-        response_dict = dict(response['results'][number])
-
+    for response_dict in response['results']:
         films_list = []
         for film in response_dict['films']:
             film_itens = get(film).json()['title']
@@ -222,22 +216,23 @@ def vehicles(name):
             pilots_list.append(pilot_itens)
 
         vehicles_response = {
-            "Name": response_dict['name'],
-            "Model": response_dict['model'],
-            "Vehicle Class": response_dict['vehicle_class'],
-            "Manufacturer": response_dict['manufacturer'],
-            "Length (Meters)": response_dict['length'],
-            "Cost (Credits)": response_dict['cost_in_credits'],
-            "Crew": response_dict['crew'],
-            "Passengers": response_dict['passengers'],
-            "Max Atmosphering Speed": response_dict['max_atmosphering_speed'],
-            "Cargo Capacity (Kg)": response_dict['cargo_capacity'],
-            "Consumables": response_dict['consumables'],
-            "Films": films_list,
-            "Pilots": pilots_list,
+            "name": response_dict['name'],
+            "model": response_dict['model'],
+            "vehicle_class": response_dict['vehicle_class'],
+            "manufacturer": response_dict['manufacturer'],
+            "length": response_dict['length'],
+            "cost": response_dict['cost_in_credits'],
+            "crew": response_dict['crew'],
+            "passengers": response_dict['passengers'],
+            "max_atmosphering_speed": response_dict['max_atmosphering_speed'],
+            "cargo_capacity": response_dict['cargo_capacity'],
+            "consumables": response_dict['consumables'],
+            "films": films_list,
+            "pilots": pilots_list,
         }
 
-        yield json.dumps(vehicles_response)
+        vehicle = Vehicle(**vehicles_response)
+        yield vehicle.json(ensure_ascii=False, encoder='utf-8')
 
 
 if __name__ == '__main__':
