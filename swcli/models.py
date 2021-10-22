@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import List
 
 
-class _Film(BaseModel):
+class Film(BaseModel):
     title: str
     episode: str
     director: str
@@ -15,7 +15,7 @@ class _Film(BaseModel):
     planets: List[str]
 
 
-class _Person(BaseModel):
+class Person(BaseModel):
     name: str
     height: float
     mass: str
@@ -29,7 +29,7 @@ class _Person(BaseModel):
     starships: List[str]
 
 
-class _Planet(BaseModel):
+class Planet(BaseModel):
     name: str
     diameter: int
     rotation_period: int
@@ -43,7 +43,7 @@ class _Planet(BaseModel):
     films: List[str]
 
 
-class _Specie(BaseModel):
+class Specie(BaseModel):
     name: str
     classification: str
     designation: str
@@ -58,7 +58,7 @@ class _Specie(BaseModel):
     films: List[str]
 
 
-class _Starship(BaseModel):
+class Starship(BaseModel):
     name: str
     model: str
     starship_class: str
@@ -76,7 +76,7 @@ class _Starship(BaseModel):
     pilots: List[str]
 
 
-class _Vehicle(BaseModel):
+class Vehicle(BaseModel):
     name: str
     model: str
     vehicle_class: str

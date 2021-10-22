@@ -1,278 +1,113 @@
 import fire
-import settings
-from httpx import get
-from models import _Film, _Person, _Planet, _Specie, _Starship, _Vehicle
+from films import GetFilm
+from people import GetPerson
+from planets import GetPlanet
+from species import GetSpecie
+from starships import GetStarship
+from vehicles import GetVehicle
 
 
-def films(title):
+def films(id='', title=''):
     """
-    Return a one or many movies on Star Wars trilogies.
-    Like: A New Hope, Attack of Clones, etc.
+    Return a one or many movies on Star Wars trilogies by Title.
     """
-    response = get(
-        settings.BASE_URL +
-        settings.FILMS +
-        settings.SEARCH +
-        title).json()
+    if id != '' and title == '':
+        response = GetFilm.get_film_by_id(id)
+    elif title != '' and id == '':
+        response = GetFilm.get_film_by_title(title)
 
-    for response_dict in response['results']:
-        species_list = []
-        for specie in response_dict['species']:
-            specie_itens = get(specie).json()['name']
-            species_list.append(specie_itens)
-
-        starships_list = []
-        for starship in response_dict['starships']:
-            starship_itens = get(starship).json()['name']
-            starships_list.append(starship_itens)
-
-        vehicles_list = []
-        for vehicle in response_dict['vehicles']:
-            vehicle_itens = get(vehicle).json()['name']
-            vehicles_list.append(vehicle_itens)
-
-        characters_list = []
-        for character in response_dict['characters']:
-            character_itens = get(character).json()['name']
-            characters_list.append(character_itens)
-
-        planets_list = []
-        for planet in response_dict['planets']:
-            planet_itens = get(planet).json()['name']
-            planets_list.append(planet_itens)
-
-        film_response = {
-            "title": response_dict['title'],
-            "episode": response_dict['episode_id'],
-            "director": response_dict['director'],
-            "producer": response_dict['producer'],
-            "release_date": response_dict['release_date'],
-            "species": species_list,
-            "starships": starships_list,
-            "vehicles": vehicles_list,
-            "characters": characters_list,
-            "planets": planets_list,
-        }
-
-        film = _Film(**film_response)
-        yield film.json(ensure_ascii=False, encoder='utf-8')
+    try:
+        return response
+    except BaseException:
+        raise SystemExit('Invalid search!')
 
 
-def people(name):
+def people(id='', name=''):
     """
     Returns a character on the Star Wars movies.
     Like: Luke, Leia, Anakin, etc.
     """
-    response = get(
-        settings.BASE_URL +
-        settings.PEOPLE +
-        settings.SEARCH +
-        name).json()
+    if id != '' and name == '':
+        response = GetPerson.get_person_by_id(id)
+    elif name != '' and id == '':
+        response = GetPerson.get_person_by_name(name)
 
-    for response_dict in response['results']:
-        homeworld = get(response_dict['homeworld']).json()['name']
-
-        vehicles_list = []
-        for vehicle in response_dict['vehicles']:
-            vehicle_itens = get(vehicle).json()['name']
-            vehicles_list.append(vehicle_itens)
-
-        films_list = []
-        for film in response_dict['films']:
-            film_itens = get(film).json()['title']
-            films_list.append(film_itens)
-
-        starships_list = []
-        for starship in response_dict['starships']:
-            starship_itens = get(starship).json()['name']
-            starships_list.append(starship_itens)
-
-        character_response = {
-            "name": response_dict['name'],
-            "height": int(response_dict['height']) / 100,
-            "mass": response_dict['mass'],
-            "hair_color": response_dict['hair_color'],
-            "skin_color": response_dict['skin_color'],
-            "birth_year": response_dict['birth_year'],
-            "gender": response_dict['gender'],
-            "homeworld": homeworld,
-            "films": films_list,
-            "vehicles": vehicles_list,
-            "starships": starships_list,
-        }
-
-        person = _Person(**character_response)
-        yield person.json(ensure_ascii=False, encoder='utf-8')
+    try:
+        return response
+    except BaseException:
+        raise SystemExit('Invalid search!')
 
 
-def planets(name):
+def planets(id='', name=''):
     """
     Return a planet.
     Like: Hoth, Naboo, etc.
     """
-    response = get(
-        settings.BASE_URL +
-        settings.PLANETS +
-        settings.SEARCH +
-        name).json()
+    if id != '' and name == '':
+        response = GetPlanet.get_planet_by_id(id)
+    elif name != '' and id == '':
+        response = GetPlanet.get_planets_by_name(name)
 
-    for response_dict in response['results']:
-        residents_list = []
-        for resident in response_dict['residents']:
-            resident_itens = get(resident).json()['name']
-            residents_list.append(resident_itens)
-
-        films_list = []
-        for film in response_dict['films']:
-            film_itens = get(film).json()['title']
-            films_list.append(film_itens)
-
-        planet_response = {
-            "name": response_dict['name'],
-            "diameter": response_dict['diameter'],
-            "rotation_period": response_dict['rotation_period'],
-            "orbital_period": response_dict['orbital_period'],
-            "gravity": response_dict['gravity'],
-            "population": response_dict['population'],
-            "climate": response_dict['climate'],
-            "terrain": response_dict['terrain'],
-            "surface_water": response_dict['surface_water'],
-            "residents": residents_list,
-            "films": films_list,
-        }
-
-        planet = _Planet(**planet_response)
-        yield planet.json(ensure_ascii=False, encoder='utf-8')
+    try:
+        return response
+    except BaseException:
+        raise SystemExit('Invalid search!')
 
 
-def species(name):
+def species(id='', name=''):
     """
     Return a species on the Star Wars universe.
     Like: Wookie, Human, etc.
     """
-    response = get(
-        settings.BASE_URL +
-        settings.SPECIES +
-        settings.SEARCH +
-        name).json()
+    if id != '' and name == '':
+        response = GetSpecie.get_specie_by_id(id)
+    elif name != '' and id == '':
+        response = GetSpecie.get_specie_by_name(name)
 
-    for response_dict in response['results']:
-        homeworld = get(response_dict['homeworld']).json()['name']
-
-        people_list = []
-        for person in response_dict['people']:
-            person_itens = get(person).json()['name']
-            people_list.append(person_itens)
-
-        films_list = []
-        for film in response_dict['films']:
-            film_itens = get(film).json()['title']
-            films_list.append(film_itens)
-
-        species_response = {
-            "name": response_dict['name'],
-            "classification": response_dict['classification'],
-            "designation": response_dict['designation'],
-            "average_height": int(response_dict['average_height']) / 100,
-            "average_lifespan": response_dict['average_lifespan'],
-            "eye_colors": response_dict['eye_colors'],
-            "hair_colors": response_dict['hair_colors'],
-            "skin_colors": response_dict['skin_colors'],
-            "language": response_dict['language'],
-            "homeworld": homeworld,
-            "people": people_list,
-            "films": films_list,
-        }
-
-        specie = _Specie(**species_response)
-        yield specie.json(ensure_ascii=False, encoder='utf-8')
+    try:
+        return response
+    except BaseException:
+        raise SystemExit('Invalid search!')
 
 
-def starships(name):
+def starships(id='', name=''):
     """
     Return a Starships on Star Wars universe.
     Like: Death Star, Millenium Falcon, etc.
     """
-    response = get(
-        settings.BASE_URL +
-        settings.STARSHIPS +
-        settings.SEARCH +
-        name).json()
+    if id != '' and name == '':
+        response = GetStarship.get_starship_by_id(id)
+    elif name != '' and id == '':
+        response = GetStarship.get_starship_by_name(name)
 
-    for response_dict in response['results']:
-        films_list = []
-        for film in response_dict['films']:
-            film_itens = get(film).json()['title']
-            films_list.append(film_itens)
-
-        pilots_list = []
-        for pilot in response_dict['pilots']:
-            pilot_itens = get(pilot).json()['name']
-            pilots_list.append(pilot_itens)
-
-        starships_response = {
-            "name": response_dict['name'],
-            "model": response_dict['model'],
-            "starship_class": response_dict['starship_class'],
-            "manufacturer": response_dict['manufacturer'],
-            "cost": response_dict['cost_in_credits'],
-            "length": response_dict['length'],
-            "crew": response_dict['crew'],
-            "passengers": response_dict['passengers'],
-            "max_atmosphering_speed": response_dict['max_atmosphering_speed'],
-            "hyperdrive_rating": response_dict['hyperdrive_rating'],
-            "mglt": response_dict['MGLT'],
-            "cargo_capacity": response_dict['cargo_capacity'],
-            "consumables": response_dict['consumables'],
-            "films": films_list,
-            "pilots": pilots_list,
-        }
-
-        starship = _Starship(**starships_response)
-        yield starship.json(ensure_ascii=False, encoder='utf-8')
+    try:
+        return response
+    except BaseException:
+        raise SystemExit('Invalid search!')
 
 
-def vehicles(name):
+def vehicles(id='', name=''):
     """
     Return a vehicle used on Star Wars universe.
     Like: TIE Fighter, Geonosian starfighter, etc.
     """
-    response = get(
-        settings.BASE_URL +
-        settings.VEHICLES +
-        settings.SEARCH +
-        name).json()
+    if id != '' and name == '':
+        response = GetVehicle.get_vehicle_by_id(id)
+    elif name != '' and id == '':
+        response = GetVehicle.get_vehicle_by_name(name)
 
-    for response_dict in response['results']:
-        films_list = []
-        for film in response_dict['films']:
-            film_itens = get(film).json()['title']
-            films_list.append(film_itens)
-
-        pilots_list = []
-        for pilot in response_dict['pilots']:
-            pilot_itens = get(pilot).json()['name']
-            pilots_list.append(pilot_itens)
-
-        vehicles_response = {
-            "name": response_dict['name'],
-            "model": response_dict['model'],
-            "vehicle_class": response_dict['vehicle_class'],
-            "manufacturer": response_dict['manufacturer'],
-            "length": response_dict['length'],
-            "cost": response_dict['cost_in_credits'],
-            "crew": response_dict['crew'],
-            "passengers": response_dict['passengers'],
-            "max_atmosphering_speed": response_dict['max_atmosphering_speed'],
-            "cargo_capacity": response_dict['cargo_capacity'],
-            "consumables": response_dict['consumables'],
-            "films": films_list,
-            "pilots": pilots_list,
-        }
-
-        vehicle = _Vehicle(**vehicles_response)
-        yield vehicle.json(ensure_ascii=False, encoder='utf-8')
+    try:
+        return response
+    except BaseException:
+        raise SystemExit('Invalid search!')
 
 
 if __name__ == '__main__':
-    fire.Fire()
+    fire.Fire({
+        'films': films,
+        'people': people,
+        'planets': planets,
+        'species': species,
+        'starships': starships,
+        'vehicles': vehicles,
+    })
