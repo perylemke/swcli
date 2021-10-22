@@ -13,23 +13,28 @@ class GetPlanet():
         response = get(
             settings.BASE_URL +
             settings.PLANETS +
-            str(planet_id)).json()
+            str(planet_id))
+
+        if response.status_code != 200:
+            raise SystemExit('Resource does not exist!')
+
+        json_data = response.json()
 
         planet_response = {
-            "name": response['name'],
-            "diameter": response['diameter'],
-            "rotation_period": response['rotation_period'],
-            "orbital_period": response['orbital_period'],
-            "gravity": response['gravity'],
-            "population": response['population'],
-            "climate": response['climate'],
-            "terrain": response['terrain'],
-            "surface_water": response['surface_water'],
+            "name": json_data['name'],
+            "diameter": json_data['diameter'],
+            "rotation_period": json_data['rotation_period'],
+            "orbital_period": json_data['orbital_period'],
+            "gravity": json_data['gravity'],
+            "population": json_data['population'],
+            "climate": json_data['climate'],
+            "terrain": json_data['terrain'],
+            "surface_water": json_data['surface_water'],
             "residents": utils.get_resources_dict(
-                response['residents'],
+                json_data['residents'],
                 'name'),
             "films": utils.get_resources_dict(
-                response['films'],
+                json_data['films'],
                 'title'),
         }
 
@@ -40,28 +45,31 @@ class GetPlanet():
         """
         Returns a planet on the Star Wars movies by searching name.
         """
-        response = get(
+        json_data = get(
             settings.BASE_URL +
             settings.PLANETS +
             settings.SEARCH +
             name).json()
 
-        for response_dict in response['results']:
+        if not json_data['results']:
+            raise SystemExit('Resource does not exist!')
+
+        for json_dict in json_data['results']:
             planet_response = {
-                "name": response_dict['name'],
-                "diameter": response_dict['diameter'],
-                "rotation_period": response_dict['rotation_period'],
-                "orbital_period": response_dict['orbital_period'],
-                "gravity": response_dict['gravity'],
-                "population": response_dict['population'],
-                "climate": response_dict['climate'],
-                "terrain": response_dict['terrain'],
-                "surface_water": response_dict['surface_water'],
+                "name": json_dict['name'],
+                "diameter": json_dict['diameter'],
+                "rotation_period": json_dict['rotation_period'],
+                "orbital_period": json_dict['orbital_period'],
+                "gravity": json_dict['gravity'],
+                "population": json_dict['population'],
+                "climate": json_dict['climate'],
+                "terrain": json_dict['terrain'],
+                "surface_water": json_dict['surface_water'],
                 "residents": utils.get_resources_dict(
-                    response_dict['residents'],
+                    json_dict['residents'],
                     'name'),
                 "films": utils.get_resources_dict(
-                    response_dict['films'],
+                    json_dict['films'],
                     'title'),
             }
 

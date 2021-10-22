@@ -13,28 +13,33 @@ class GetPerson():
         response = get(
             settings.BASE_URL +
             settings.PEOPLE +
-            str(person_id)).json()
+            str(person_id))
 
-        homeworld = get(response['homeworld']).json()['name']
+        if response.status_code != 200:
+            raise SystemExit('Resource does not exist!')
+
+        json_data = response.json()
+
+        homeworld = get(json_data['homeworld']).json()['name']
 
         character_response = {
-            "name": response['name'],
+            "name": json_data['name'],
             "height": int(
-                response['height']) / 100,
-            "mass": response['mass'],
-            "hair_color": response['hair_color'],
-            "skin_color": response['skin_color'],
-            "birth_year": response['birth_year'],
-            "gender": response['gender'],
+                json_data['height']) / 100,
+            "mass": json_data['mass'],
+            "hair_color": json_data['hair_color'],
+            "skin_color": json_data['skin_color'],
+            "birth_year": json_data['birth_year'],
+            "gender": json_data['gender'],
             "homeworld": homeworld,
             "films": utils.get_resources_dict(
-                response['films'],
+                json_data['films'],
                 'title'),
             "vehicles": utils.get_resources_dict(
-                response['vehicles'],
+                json_data['vehicles'],
                 'name'),
             "starships": utils.get_resources_dict(
-                response['starships'],
+                json_data['starships'],
                 'name'),
         }
 
@@ -45,33 +50,36 @@ class GetPerson():
         """
         Returns a character on the Star Wars movies by searching name.
         """
-        response = get(
+        json_data = get(
             settings.BASE_URL +
             settings.PEOPLE +
             settings.SEARCH +
             name).json()
 
-        for response_dict in response['results']:
-            homeworld = get(response_dict['homeworld']).json()['name']
+        if not json_data['results']:
+            raise SystemExit('Resource does not exist!')
+
+        for json_dict in json_data['results']:
+            homeworld = get(json_dict['homeworld']).json()['name']
 
             character_response = {
-                "name": response_dict['name'],
+                "name": json_dict['name'],
                 "height": int(
-                    response_dict['height']) / 100,
-                "mass": response_dict['mass'],
-                "hair_color": response_dict['hair_color'],
-                "skin_color": response_dict['skin_color'],
-                "birth_year": response_dict['birth_year'],
-                "gender": response_dict['gender'],
+                    json_dict['height']) / 100,
+                "mass": json_dict['mass'],
+                "hair_color": json_dict['hair_color'],
+                "skin_color": json_dict['skin_color'],
+                "birth_year": json_dict['birth_year'],
+                "gender": json_dict['gender'],
                 "homeworld": homeworld,
                 "films": utils.get_resources_dict(
-                    response_dict['films'],
+                    json_dict['films'],
                     'title'),
                 "vehicles": utils.get_resources_dict(
-                    response_dict['vehicles'],
+                    json_dict['vehicles'],
                     'name'),
                 "starships": utils.get_resources_dict(
-                    response_dict['starships'],
+                    json_dict['starships'],
                     'name'),
             }
 

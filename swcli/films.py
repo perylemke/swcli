@@ -6,31 +6,39 @@ from models import Film
 
 class GetFilm():
     def get_film_by_id(film_id):
+        """
+        Return a one or many movies on Star Wars trilogies by ID.
+        """
         response = get(
             settings.BASE_URL +
             settings.FILMS +
-            str(film_id)).json()
+            str(film_id))
+
+        if response.status_code != 200:
+            raise SystemExit('Resource does not exist!')
+
+        json_data = response.json()
 
         film_response = {
-            "title": response['title'],
-            "episode": response['episode_id'],
-            "director": response['director'],
-            "producer": response['producer'],
-            "release_date": response['release_date'],
+            "title": json_data['title'],
+            "episode": json_data['episode_id'],
+            "director": json_data['director'],
+            "producer": json_data['producer'],
+            "release_date": json_data['release_date'],
             "species": utils.get_resources_dict(
-                response['species'],
+                json_data['species'],
                 'name'),
             "starships": utils.get_resources_dict(
-                response['starships'],
+                json_data['starships'],
                 'name'),
             "vehicles": utils.get_resources_dict(
-                response['vehicles'],
+                json_data['vehicles'],
                 'name'),
             "characters": utils.get_resources_dict(
-                response['characters'],
+                json_data['characters'],
                 'name'),
             "planets": utils.get_resources_dict(
-                response['planets'],
+                json_data['planets'],
                 'name'),
         }
         film = Film(**film_response)
@@ -40,33 +48,36 @@ class GetFilm():
         """
         Return a one or many movies on Star Wars trilogies by Title.
         """
-        response = get(
+        json_data = get(
             settings.BASE_URL +
             settings.FILMS +
             settings.SEARCH +
             title).json()
 
-        for response_dict in response['results']:
+        if not json_data['results']:
+            raise SystemExit('Resource does not exist!')
+
+        for json_dict in json_data['results']:
             film_response = {
-                "title": response_dict['title'],
-                "episode": response_dict['episode_id'],
-                "director": response_dict['director'],
-                "producer": response_dict['producer'],
-                "release_date": response_dict['release_date'],
+                "title": json_dict['title'],
+                "episode": json_dict['episode_id'],
+                "director": json_dict['director'],
+                "producer": json_dict['producer'],
+                "release_date": json_dict['release_date'],
                 "species": utils.get_resources_dict(
-                    response_dict['species'],
+                    json_dict['species'],
                     'name'),
                 "starships": utils.get_resources_dict(
-                    response_dict['starships'],
+                    json_dict['starships'],
                     'name'),
                 "vehicles": utils.get_resources_dict(
-                    response_dict['vehicles'],
+                    json_dict['vehicles'],
                     'name'),
                 "characters": utils.get_resources_dict(
-                    response_dict['characters'],
+                    json_dict['characters'],
                     'name'),
                 "planets": utils.get_resources_dict(
-                    response_dict['planets'],
+                    json_dict['planets'],
                     'name'),
             }
 
