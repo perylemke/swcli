@@ -1,10 +1,18 @@
 import fire
-from films import GetFilm
-from people import GetPerson
-from planets import GetPlanet
-from species import GetSpecie
-from starships import GetStarship
-from vehicles import GetVehicle
+try:
+    from swcli.films import GetFilm
+    from swcli.people import GetPerson
+    from swcli.planets import GetPlanet
+    from swcli.species import GetSpecie
+    from swcli.starships import GetStarship
+    from swcli.vehicles import GetVehicle
+except:
+    from films import GetFilm
+    from people import GetPerson
+    from planets import GetPlanet
+    from species import GetSpecie
+    from starships import GetStarship
+    from vehicles import GetVehicle
 
 
 def films(id='', title=''):

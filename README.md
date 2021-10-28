@@ -20,7 +20,7 @@ $ pip install swcli
 Ever object you can search by the name. Like below:
 
 ```
-$ python3 swcli/swcli.py people --name=Luke
+$ swcli people --name=Luke
 {"Name": "Luke Skywalker", "Height (Meters)": 1.72, "Mass (Kg)": "77", "Hair Color": "blond", "Skin Color": "fair", "Birth Year": "19BBY", "Gender": "male", "Homeworld": "Tatooine", "Films": ["A New Hope", "The Empire Strikes Back", "Return of the Jedi", "Revenge of the Sith"], "Vehicles": ["Snowspeeder", "Imperial Speeder Bike"], "Starships": ["X-wing", "Imperial shuttle"]}
 ```
 

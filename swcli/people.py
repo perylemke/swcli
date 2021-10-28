@@ -1,7 +1,12 @@
-import settings
-import utils
+try:
+    import swcli.settings as settings
+    import swcli.utils as utils
+    from swcli.models import Person
+except:
+    import settings
+    import utils
+    from models import Person
 from httpx import get
-from models import Person
 
 
 class GetPerson():

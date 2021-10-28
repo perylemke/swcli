@@ -1,7 +1,12 @@
-import settings
-import utils
+try:
+    import swcli.settings as settings
+    import swcli.utils as utils
+    from swcli.models import Film
+except:
+    import settings
+    import utils
+    from models import Film
 from httpx import get
-from models import Film
 
 
 class GetFilm():
@@ -49,9 +54,9 @@ class GetFilm():
         Return a one or many movies on Star Wars trilogies by Title.
         """
         json_data = get(
-            settings.BASE_URL +
-            settings.FILMS +
-            settings.SEARCH +
+            swcli.settings.BASE_URL +
+            swcli.settings.FILMS +
+            swcli.settings.SEARCH +
             title).json()
 
         if not json_data['results']:
