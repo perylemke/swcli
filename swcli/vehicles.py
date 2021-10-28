@@ -1,7 +1,12 @@
-import settings
-import utils
+try:
+    import swcli.settings as settings
+    import swcli.utils as utils
+    from swcli.models import Vehicle
+except:
+    import settings
+    import utils
+    from models import Vehicle
 from httpx import get
-from models import Vehicle
 
 
 class GetVehicle(object):

@@ -1,7 +1,12 @@
-import settings
-import utils
+try:
+    import swcli.settings as settings
+    import swcli.utils as utils
+    from swcli.models import Planet
+except:
+    import settings
+    import utils
+    from models import Planet
 from httpx import get
-from models import Specie
 
 
 class GetSpecie(object):

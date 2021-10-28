@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "swcli"
-version = "0.1.1"
+version = "0.1.9"
 description = "A simple CLI to do queries in StarWars API."
 authors = ["Pery Lemke <pery.lemke@gmail.com>"]
 
@@ -13,6 +13,9 @@ autopep8 = "^1.5.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+
+[tool.poetry.scripts]
+swcli = 'swcli.swcli:main'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
