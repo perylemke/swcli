@@ -1,9 +1,7 @@
 try:
-    import swcli.settings as settings
     import swcli.utils as utils
     from swcli.models import Starship
 except:
-    import settings
     import utils
     from models import Starship
 from httpx import get
@@ -14,10 +12,8 @@ class GetStarship(object):
         """
         Return a one starship on Star Wars trilogies by ID.
         """
-        response = get(
-            settings.BASE_URL +
-            settings.STARSHIPS +
-            str(starship_id))
+        starships_url = f'https://swapi.dev/api/starships/{starship_id}/'
+        response = get(starships_url)
 
         if response.status_code != 200:
             raise SystemExit('Resource does not exist!')
@@ -54,11 +50,8 @@ class GetStarship(object):
         Return a Starships on Star Wars universe.
         Like: Death Star, Millenium Falcon, etc.
         """
-        json_data = get(
-            settings.BASE_URL +
-            settings.STARSHIPS +
-            settings.SEARCH +
-            name).json()
+        starships_url = f'https://swapi.dev/api/starships/?search={name}'
+        json_data = get(starships_url).json()
 
         if not json_data['results']:
             raise SystemExit('Resource does not exist!')

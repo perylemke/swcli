@@ -1,9 +1,7 @@
 try:
-    import swcli.settings as settings
     import swcli.utils as utils
     from swcli.models import Planet
 except:
-    import settings
     import utils
     from models import Planet
 from httpx import get
@@ -15,10 +13,8 @@ class GetPlanet():
         Returns a planet on the Star Wars movies by searching ID.
         Like: Naboo, Coruscant, etc.
         """
-        response = get(
-            settings.BASE_URL +
-            settings.PLANETS +
-            str(planet_id))
+        planets_url = f'https://swapi.dev/api/planets/{planet_id}/'
+        response = get(planets_url)
 
         if response.status_code != 200:
             raise SystemExit('Resource does not exist!')
@@ -50,11 +46,8 @@ class GetPlanet():
         """
         Returns a planet on the Star Wars movies by searching name.
         """
-        json_data = get(
-            settings.BASE_URL +
-            settings.PLANETS +
-            settings.SEARCH +
-            name).json()
+        planets_url = f'https://swapi.dev/api/planets/?search={name}'
+        json_data = get(planets_url).json()
 
         if not json_data['results']:
             raise SystemExit('Resource does not exist!')

@@ -1,11 +1,9 @@
 try:
-    import swcli.settings as settings
     import swcli.utils as utils
-    from swcli.models import Planet
+    from swcli.models import Specie
 except:
-    import settings
     import utils
-    from models import Planet
+    from models import Specie
 from httpx import get
 
 
@@ -14,10 +12,8 @@ class GetSpecie(object):
         """
         Return a one or many species on Star Wars trilogies by ID.
         """
-        response = get(
-            settings.BASE_URL +
-            settings.SPECIES +
-            str(specie_id))
+        specie_url = f'https://swapi.dev/api/species/{specie_id}/'
+        response = get(specie_url)
 
         if response.status_code != 200:
             raise SystemExit('Resource does not exist!')
@@ -52,11 +48,8 @@ class GetSpecie(object):
         """
         Returns a specie on the Star Wars movies by searching name.
         """
-        json_data = get(
-            settings.BASE_URL +
-            settings.SPECIES +
-            settings.SEARCH +
-            name).json()
+        specie_url = f'https://swapi.dev/api/species/?search={name}'
+        json_data = get(specie_url).json()
 
         if not json_data['results']:
             raise SystemExit('Resource does not exist!')

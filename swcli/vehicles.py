@@ -1,9 +1,7 @@
 try:
-    import swcli.settings as settings
     import swcli.utils as utils
     from swcli.models import Vehicle
 except:
-    import settings
     import utils
     from models import Vehicle
 from httpx import get
@@ -14,10 +12,8 @@ class GetVehicle(object):
         """
         Return a one starship on Star Wars trilogies by ID.
         """
-        response = get(
-            settings.BASE_URL +
-            settings.VEHICLES +
-            str(vehicle_id))
+        vehicles_url = f'https://swapi.dev/api/vehicles/{vehicle_id}/'
+        response = get(vehicles_url)
 
         if response.status_code != 200:
             raise SystemExit('Resource does not exist!')
@@ -52,11 +48,8 @@ class GetVehicle(object):
         Return a vehicle used on Star Wars universe.
         Like: TIE Fighter, Geonosian starfighter, etc.
         """
-        json_data = get(
-            settings.BASE_URL +
-            settings.VEHICLES +
-            settings.SEARCH +
-            name).json()
+        vehicles_url = f'https://swapi.dev/api/vehicles/?search={name}'
+        json_data = get(vehicles_url).json()
 
         if not json_data['results']:
             raise SystemExit('Resource does not exist!')
