@@ -1,9 +1,7 @@
 try:
-    import swcli.settings as settings
     import swcli.utils as utils
     from swcli.models import Film
 except:
-    import settings
     import utils
     from models import Film
 from httpx import get
@@ -14,10 +12,8 @@ class GetFilm():
         """
         Return a one or many movies on Star Wars trilogies by ID.
         """
-        response = get(
-            settings.BASE_URL +
-            settings.FILMS +
-            str(film_id))
+        films_url = f'https://swapi.dev/api/films/{film_id}/'
+        response = get(films_url)
 
         if response.status_code != 200:
             raise SystemExit('Resource does not exist!')
@@ -53,11 +49,8 @@ class GetFilm():
         """
         Return a one or many movies on Star Wars trilogies by Title.
         """
-        json_data = get(
-            swcli.settings.BASE_URL +
-            swcli.settings.FILMS +
-            swcli.settings.SEARCH +
-            title).json()
+        films_url = f'https://swapi.dev/api/films/?search={title}'
+        json_data = get(films_url).json()
 
         if not json_data['results']:
             raise SystemExit('Resource does not exist!')

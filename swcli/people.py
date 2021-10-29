@@ -1,9 +1,7 @@
 try:
-    import swcli.settings as settings
     import swcli.utils as utils
     from swcli.models import Person
 except:
-    import settings
     import utils
     from models import Person
 from httpx import get
@@ -15,10 +13,8 @@ class GetPerson():
         Returns a character on the Star Wars movies by searching ID.
         Like: Luke, Leia, Anakin, etc.
         """
-        response = get(
-            settings.BASE_URL +
-            settings.PEOPLE +
-            str(person_id))
+        people_url = f'https://swapi.dev/api/people/{person_id}/'
+        response = get(people_url)
 
         if response.status_code != 200:
             raise SystemExit('Resource does not exist!')
@@ -55,11 +51,8 @@ class GetPerson():
         """
         Returns a character on the Star Wars movies by searching name.
         """
-        json_data = get(
-            settings.BASE_URL +
-            settings.PEOPLE +
-            settings.SEARCH +
-            name).json()
+        people_url = f'https://swapi.dev/api/people/?search={name}'
+        json_data = get(people_url).json()
 
         if not json_data['results']:
             raise SystemExit('Resource does not exist!')
