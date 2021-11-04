@@ -1,7 +1,9 @@
 try:
     import swcli.utils as utils
+    from swcli.exceptions import InvalidSearchError, ResourceDoesNotExistError
 except:
     import utils
+    from exceptions import InvalidSearchError, ResourceDoesNotExistError
 from pydantic import BaseModel
 from typing import List
 from httpx import get
@@ -28,6 +30,8 @@ class Film(BaseModel):
                 json_data = utils.query_by_id(film_id, 'films')
             elif not film_id and film_title:
                 json_data = utils.query_by_name(film_title, 'films')
+            else:
+                raise InvalidSearchError("Invalid search!")
 
             for resource in json_data:
                 species = utils.get_resources_dict(
@@ -60,8 +64,10 @@ class Film(BaseModel):
 
                 film = Film(**film_response)
                 yield film.json(ensure_ascii=False, encoder='utf-8')
-        except BaseException:
-            raise SystemExit('Invalid search or Resource does not exist!')
+        except InvalidSearchError as e:
+            raise SystemExit(e)
+        except ResourceDoesNotExistError as e:
+            raise SystemExit(e)
 
 
 class Person(BaseModel):
@@ -86,6 +92,8 @@ class Person(BaseModel):
                 json_data = utils.query_by_id(person_id, 'people')
             elif not person_id and person_name:
                 json_data = utils.query_by_name(person_name, 'people')
+            else:
+                raise InvalidSearchError("Invalid search!")
 
             for resource in json_data:
                 homeworld = get(resource['homeworld']).json()['name']
@@ -111,8 +119,10 @@ class Person(BaseModel):
 
                 person = Person(**character_response)
                 yield person.json(ensure_ascii=False, encoder='utf-8')
-        except BaseException:
-            raise SystemExit('Invalid search or Resource does not exist!')
+        except InvalidSearchError as e:
+            raise SystemExit(e)
+        except ResourceDoesNotExistError as e:
+            raise SystemExit(e)
 
 
 class Planet(BaseModel):
@@ -137,6 +147,8 @@ class Planet(BaseModel):
                 json_data = utils.query_by_id(planet_id, 'planets')
             elif not planet_id and planet_name:
                 json_data = utils.query_by_name(planet_name, 'planets')
+            else:
+                raise InvalidSearchError("Invalid search!")
 
             for resource in json_data:
                 residents = utils.get_resources_dict(
@@ -161,8 +173,10 @@ class Planet(BaseModel):
 
                 planet = Planet(**planet_response)
                 yield planet.json(ensure_ascii=False, encoder='utf-8')
-        except BaseException:
-            raise SystemExit('Invalid search or Resource does not exist!')
+        except InvalidSearchError as e:
+            raise SystemExit(e)
+        except ResourceDoesNotExistError as e:
+            raise SystemExit(e)
 
 
 class Specie(BaseModel):
@@ -188,6 +202,8 @@ class Specie(BaseModel):
                 json_data = utils.query_by_id(specie_id, 'species')
             elif not specie_id and specie_name:
                 json_data = utils.query_by_name(specie_name, 'species')
+            else:
+                raise InvalidSearchError("Invalid search!")
 
             for resource in json_data:
                 homeworld = get(resource['homeworld']).json()['name']
@@ -214,8 +230,10 @@ class Specie(BaseModel):
 
                 specie = Specie(**species_response)
                 yield specie.json(ensure_ascii=False, encoder='utf-8')
-        except BaseException:
-            raise SystemExit('Invalid search or Resource does not exist!')
+        except InvalidSearchError as e:
+            raise SystemExit(e)
+        except ResourceDoesNotExistError as e:
+            raise SystemExit(e)
 
 
 class Starship(BaseModel):
@@ -244,6 +262,8 @@ class Starship(BaseModel):
                 json_data = utils.query_by_id(starship_id, 'starships')
             elif not starship_id and starship_name:
                 json_data = utils.query_by_name(starship_name, 'starships')
+            else:
+                raise InvalidSearchError("Invalid search!")
 
             for resource in json_data:
                 films = utils.get_resources_dict(
@@ -272,8 +292,10 @@ class Starship(BaseModel):
 
                 starship = Starship(**starships_response)
                 yield starship.json(ensure_ascii=False, encoder='utf-8')
-        except BaseException:
-            raise SystemExit('Invalid search or Resource does not exist!')
+        except InvalidSearchError as e:
+            raise SystemExit(e)
+        except ResourceDoesNotExistError as e:
+            raise SystemExit(e)
 
 
 class Vehicle(BaseModel):
@@ -300,6 +322,8 @@ class Vehicle(BaseModel):
                 json_data = utils.query_by_id(vehicle_id, 'vehicles')
             elif not vehicle_id and vehicle_name:
                 json_data = utils.query_by_name(vehicle_name, 'vehicles')
+            else:
+                raise InvalidSearchError("Invalid search!")
 
             for resource in json_data:
                 films = utils.get_resources_dict(
@@ -327,5 +351,7 @@ class Vehicle(BaseModel):
 
                 vehicle = Vehicle(**vehicles_response)
                 yield vehicle.json(ensure_ascii=False, encoder='utf-8')
-        except BaseException:
-            raise SystemExit('Invalid search or Resource does not exist!')
+        except InvalidSearchError as e:
+            raise SystemExit(e)
+        except ResourceDoesNotExistError as e:
+            raise SystemExit(e)

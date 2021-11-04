@@ -1,4 +1,5 @@
 from httpx import get
+from exceptions import ResourceDoesNotExistError
 
 
 def query_by_id(resource_id, resource_type):
@@ -9,7 +10,7 @@ def query_by_id(resource_id, resource_type):
     response = get(url)
 
     if response.status_code != 200:
-        raise SystemExit('Resource does not exist!')
+        raise ResourceDoesNotExistError('Resource does not exist!')
 
     # Include the return in a list
     json_data = []
@@ -26,7 +27,7 @@ def query_by_name(resource_name, resource_type):
     response = get(url).json()
 
     if not response['results']:
-        raise SystemExit('Resource does not exist!')
+        raise ResourceDoesNotExistError('Resource does not exist!')
 
     json_data = response['results']
 
