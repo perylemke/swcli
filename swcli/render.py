@@ -1,7 +1,7 @@
 try:
     import swcli.utils as utils
     from swcli.exceptions import InvalidSearchError, ResourceDoesNotExistError
-except BaseException:
+except:
     import utils
     from exceptions import InvalidSearchError, ResourceDoesNotExistError
 from httpx import get
@@ -16,20 +16,10 @@ def render(resource_id, resource_name, resource_type):
         else:
             raise InvalidSearchError("Invalid search!")
 
-        special_fields = [
-            'Species',
-            'Vehicles',
-            'Starships',
-            'Characters',
-            'Planets',
-            'Residents',
-            'People',
-            'Pilots']
-
         for json_dict in json_list:
             for json_data in json_dict:
                 label = json_data.capitalize().replace('_', ' ')
-                if label == 'Created' or label == 'Edited' or label == 'Url':
+                if label in ('Created', 'Edited', 'Url'):
                     pass
                 elif label == 'Homeworld':
                     homeworld = get(json_dict['homeworld']).json()['name']
@@ -42,7 +32,14 @@ def render(resource_id, resource_name, resource_type):
                         json_dict['films'],
                         'title')
                     print(f'{label}: {films}')
-                elif label in special_fields:
+                elif label in ('Species',
+                               'Vehicles',
+                               'Starships',
+                               'Characters',
+                               'Planets',
+                               'Residents',
+                               'People',
+                               'Pilots'):
                     special_label = utils.get_resources_dict(
                         json_dict[label.lower()],
                         'name')
