@@ -1,5 +1,8 @@
+try:
+    from swcli.exceptions import ResourceDoesNotExistError
+except:
+    from exceptions import ResourceDoesNotExistError
 from httpx import get
-from exceptions import ResourceDoesNotExistError
 
 
 def query_by_id(resource_id, resource_type):

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "swcli"
-version = "0.1.9"
+version = "0.1.14"
 description = "A simple CLI to do queries in StarWars API."
 authors = ["Pery Lemke <pery.lemke@gmail.com>"]
 
@@ -8,7 +8,6 @@ authors = ["Pery Lemke <pery.lemke@gmail.com>"]
 python = "^3.8"
 httpx = "^0.20.0"
 fire = "^0.4.0"
-pydantic = "^1.8.2"
 autopep8 = "^1.5.7"
 
 [tool.poetry.dev-dependencies]
