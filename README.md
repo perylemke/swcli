@@ -21,7 +21,19 @@ Ever object you can search by the name. Like below:
 
 ```
 $ swcli people --name=Luke
-{"Name": "Luke Skywalker", "Height (Meters)": 1.72, "Mass (Kg)": "77", "Hair Color": "blond", "Skin Color": "fair", "Birth Year": "19BBY", "Gender": "male", "Homeworld": "Tatooine", "Films": ["A New Hope", "The Empire Strikes Back", "Return of the Jedi", "Revenge of the Sith"], "Vehicles": ["Snowspeeder", "Imperial Speeder Bike"], "Starships": ["X-wing", "Imperial shuttle"]}
+Name: Luke Skywalker
+Height: 1.72
+Mass: 77
+Hair color: blond
+Skin color: fair
+Eye color: blue
+Birth year: 19BBY
+Gender: male
+Homeworld: Tatooine
+Films: ['A New Hope', 'The Empire Strikes Back', 'Return of the Jedi', 'Revenge of the Sith']
+Species: []
+Vehicles: ['Snowspeeder', 'Imperial Speeder Bike']
+Starships: ['X-wing', 'Imperial shuttle']
 ```
 
 ## Tools and Libs
